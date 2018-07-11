@@ -1,0 +1,28 @@
+{
+  "name": "tyte-cli",
+  "version": "1.0.0",
+  "description": "A cli module for the tyte framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "cli",
+    "tyte",
+    "framework",
+    "nodejs",
+    "typescript",
+    "javascript"
+  ],
+  "author": "Norris Oduro <norrisjibril@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.3.0",
+    "commander": "^2.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.2",
+    "typescript": "^2.9.2",
+    "typescript-eslint-parser": "^16.0.1"
+  }
+}
