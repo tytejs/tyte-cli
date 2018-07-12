@@ -11,18 +11,16 @@ import CommandOptionInterface from "./Command/CommandOptionInterface";
 class HelpCommand extends CommandInterface {
   readonly name = "help";
   readonly description = "Display help for a command";
-  _options: Array<CommandOptionInterface>;
-  set options(options) {
-    this._options = options;
+  options: Array<CommandOptionInterface> = [];
+
+  constructor(){
+    super();
+    this.options.push({
+      option: "command",
+      description: "The command"
+    });
   }
-  get options(): Array<CommandOptionInterface> {
-    return [
-      {
-        option: "command",
-        description: "The command"
-      }
-    ];
-  }
+
   execute(input: InputInterface, output: OutputInterface): void {
     output.write("help [command]");
   }
@@ -37,6 +35,7 @@ export default class TyteCli {
   private appCommand: commander.CommanderStatic;
   private _description: string = "Tyte framework cli component";
   private _usage: string = "[options] [arguments]";
+  private _helpCmd: CommandInterface = new HelpCommand();
 
   constructor(
     input: InputInterface = new Input(),
@@ -89,10 +88,14 @@ export default class TyteCli {
       .usage(this._usage);
   }
 
+  set helpCommand(command: CommandInterface) {
+    this._helpCmd = command;
+  }
+  
   run(): void {
     //run the app config setup
     this.setUp();
-    
+
     this.commands.forEach(cmd => {
       let _command: commander.Command;
       _command = commander.command(cmd.name).description(cmd.description);
