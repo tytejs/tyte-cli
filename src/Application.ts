@@ -31,9 +31,9 @@ export default class Application {
 
   run(): void {
     this.commands.forEach(cmd => {
-      let _command: any
+      let _command: commander.Command
       cmd.configure() //call the configure method to handle all inits
-      _command = commander.command(cmd.name, cmd.description)
+      _command = commander.command(cmd.name).description(cmd.description)
       cmd.options.forEach(option => {
         _command.option(option.option, option.description)
       })
