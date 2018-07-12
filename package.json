@@ -4,7 +4,8 @@
   "description": "A cli module for the tyte framework",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start":"node_modules/ts-node/dist/bin.js Index.ts"
   },
   "keywords": [
     "cli",
