@@ -5,7 +5,6 @@ import Input from "./IO/Input";
 import Output from "./IO/Output";
 import * as commander from "commander";
 import * as process from "process";
-import * as color from "colors"; //use later for coloured output
 import CommandOptionInterface from "./Command/CommandOptionInterface";
 
 class HelpCommand extends CommandInterface {

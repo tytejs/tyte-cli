@@ -18,7 +18,6 @@
   "author": "Norris Oduro <norrisjibril@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "colors": "^1.3.0",
     "commander": "^2.16.0",
     "ts-node": "^7.0.0"
   },
