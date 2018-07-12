@@ -1,48 +1,37 @@
-Tyte Cli
-=================
+# Tyte Cli
 
-The tyte-cli component eases the creation of beautiful command line applications.
-
+A simpler frontend for [commander]("https://github.com/tj/commander.js").
 
 ### Note
+
 This is still work in progress.
 
+## Usage
 
-## Usage 
-```js
-import Application from "./Application";
-import CommandInterface from "./Command/CommandInterface";
-import InputInterface from "./IO/InputInterface";
-import OutputInterface from "./IO/OutputInterface";
-import CommandOptionInterface from "./Command/CommandOptionInterface";
-import Command from "./Command/Command";
+```js 
+import TyteCli from './src/TyteCli'
+import Command from './src/Command/CommandInterface'
 
-//command
-class StartServer implements CommandInterface {
-  options: Array<CommandOptionInterface> = new Array<CommandOptionInterface>();
-  cmd: Command;
+class EchoCommand extends Command{
+  readonly name = 'echo'
+  readonly description = 'print command-line arguments'
 
-  configure() {
-    this.cmd = { cmd: "serve" };
-    this.options.push({
-      option: "-p, --port",
-      description: "Specifies the port to launch the application on"
-    });
-  }
-
-  execute(input: InputInterface, output: OutputInterface) {
-    let port = 8000;
-    let values = input.values();
-    if (values.length > 0) {
-      port = values[0]; //this is buggy we need to check and get the argument passed to the option directly because options can be mixed up
-    }
-    output.write(`Tyte application started on port ${port}`);
-    setTimeout(()=>{},10000);//delay to simulate a started server
+  execute(input,output){
+     output.write(input.values().join(' '))
   }
 }
 
-// Application
-const myApp = new Application();
-myApp.addCommand(new StartServer());
+
+const myApp = new TyteCli();
+myApp.addCommand(new EchoCommand());
 myApp.run();
 ```
+
+```bash
+ts-node test.ts echo "message"
+```
+
+
+## output
+
+`message`
