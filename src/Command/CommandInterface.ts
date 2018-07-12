@@ -1,11 +1,11 @@
-import OutputInterface from "../IO/OutputInterface";
-import InputInterface from "../IO/InputInterface";
-import CommandOptionInterface from "./CommandOptionInterface";
-import Command from "./Command";
+import OutputInterface from '../IO/OutputInterface'
+import InputInterface from '../IO/InputInterface'
+import CommandOptionInterface from './CommandOptionInterface'
 
 export default interface CommandInterface {
-  options: Array<CommandOptionInterface>;
-  cmd: Command;
-  configure(): void;
-  execute(input: InputInterface, output: OutputInterface): void;
+  name: string
+  description?: string
+  options?: Array<CommandOptionInterface>
+  configure(): void
+  execute(input: InputInterface, output: OutputInterface): void
 }

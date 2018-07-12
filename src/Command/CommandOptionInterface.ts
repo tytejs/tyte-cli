@@ -1,4 +1,4 @@
 export default interface CommandOptionInterface {
-    option : string;
-    description: string;
+  option: string
+  description: string
 }
