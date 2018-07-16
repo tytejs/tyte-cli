@@ -4,8 +4,8 @@
   "description": "A cli module for the tyte framework",
   "main": "index.js",
   "scripts": {
-    "test": "npm test",
-    "start":"node_modules/ts-node/dist/bin.js Index.ts"
+    "test": "jest",
+    "start": "node_modules/ts-node/dist/bin.js Index.ts"
   },
   "keywords": [
     "cli",
@@ -22,7 +22,10 @@
     "ts-node": "^7.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^23.1.5",
     "@types/node": "^10.5.2",
+    "jest": "^23.4.0",
+    "ts-jest": "^23.0.0",
     "typescript": "^2.9.2",
     "typescript-eslint-parser": "^16.0.1"
   }
