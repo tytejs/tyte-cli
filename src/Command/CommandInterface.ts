@@ -1,5 +1,5 @@
 import Output from '../IO/Output'
-import Options from './Flag'
+import Options from './Option'
 import Input from '../IO/Input'
 
 /**
