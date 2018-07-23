@@ -1,43 +1,44 @@
 import CommandInterface from './Command/CommandInterface'
-import InputInterface from './IO/InputInterface'
-import OutputInterface from './IO/OutputInterface'
-import Input from './IO/Input'
 import Output from './IO/Output'
 import * as commander from 'commander'
-import * as process from 'process'
 import * as color from 'colors' //use later for coloured output
-import CommandOptionInterface from './Command/CommandOptionInterface'
+import Options from './Command/Flag'
+import Input from './IO/Input'
 
 class HelpCommand extends CommandInterface {
   readonly name = 'help'
   readonly description = 'Display help for a command'
-  _options: Array<CommandOptionInterface>
+  _options: Array<Options> = []
+
   set options(options) {
     this._options = options
   }
-  get options(): Array<CommandOptionInterface> {
-    return [
-      {
-        option: 'command',
-        description: 'The command'
-      }
-    ]
+  get options(): Array<Options> {
+    return this._options
   }
-  execute(input: InputInterface, output: OutputInterface): void {
+  execute(input: object, output: Output): Promise<any> {
     output.write('help [command]')
+    return Promise.resolve(true)
   }
 }
+
+/**
+ * The TyteCli class is a higer level abstraction on top of commanderjs.
+ * 
+ */
+
 export default class TyteCli {
   private version: string = '1.0.0'
+  /**
+   * The commands from which TyteCli will look for a particular command 
+   * specified on the command-line. 
+   */
   private commands: Array<CommandInterface> = new Array<CommandInterface>()
-  private input: InputInterface
-  private output: OutputInterface
+  private input: Input
+  private output: Output
 
-  constructor(
-    input: InputInterface = new Input(),
-    output: OutputInterface = new Output()
-  ) {
-    this.input = input
+  constructor(output = new Output()) {
+    this.input = { args: [], options: {} }
     this.output = output
     commander
       .version(this.version, '-v, --version')
@@ -46,23 +47,46 @@ export default class TyteCli {
     this.commands.push(new HelpCommand())
   }
 
-  addCommand(command: CommandInterface): void {
+  /**
+   * registers a command to the list of runnable commands. TyteCli 
+   * will pick the command that matches the name specified on 
+   * command line
+   * 
+   * @param command the command 
+   */
+  public addCommand(command: CommandInterface): void {
     this.commands.push(command)
   }
 
-  run(): void {
+  /**
+   * Runs TtyeCli. This will cause tyte-cli to look into the 
+   * previously registered commands and run the command that 
+   * matches the one provided on the command line
+   */
+  public run(): void {
     this.commands.forEach(cmd => {
-      let _command: commander.Command
-      _command = commander.command(cmd.name).description(cmd.description)
-      cmd.options.forEach(option => {
-        _command.option(option.option, option.description)
+      let _command: commander.Command = commander
+        .command(cmd.name)
+        .description(cmd.description)
+
+      cmd.options.forEach(flag => {
+        _command.option(
+          flag.name + (flag.required ? ' <value>' : ' [value]'),
+          flag.description || '',
+          flag.defaultValue
+        )
       })
+
       let _this = this
       _command.action(function() {
-        let args = Array.from(arguments).slice() //deep copy args
-        args.pop()
-        _this.input.setValues(args)
-        cmd.execute(_this.input, _this.output)
+        let args: Array<string> = Array.prototype.slice.call(arguments, 0, -1) //deep copy, ignore  last entry
+        _this.input = {
+          args: args,
+          options: _command
+        }
+        cmd.execute(_this.input, _this.output).then(res => {
+          //done, //TODO cleanup code
+        })
       })
     })
     commander.parse(process.argv)

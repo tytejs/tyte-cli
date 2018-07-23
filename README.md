@@ -8,29 +8,29 @@ This is still work in progress.
 
 ## Usage
 
-```js 
+```js
 import TyteCli from './src/TyteCli'
 import Command from './src/Command/CommandInterface'
 
-class EchoCommand extends Command{
-  readonly name = 'echo'
-  readonly description = 'print command-line arguments'
+class EchoCommand extends Command {
+  name = 'echo'
 
-  execute(input,output){
-     output.write(input.values().join(' '))
+  execute(input, output): Promise<any> {
+    output.write(input.values().join(' '))
+    return Promise.resolve(true)
   }
 }
 
-
-const myApp = new TyteCli();
-myApp.addCommand(new EchoCommand());
-myApp.run();
+const myApp = new TyteCli()
+myApp.addCommand(new EchoCommand())
+myApp.run()
 ```
+
+## Run
 
 ```bash
 ts-node test.ts echo "message"
 ```
-
 
 ## output
 
