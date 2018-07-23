@@ -8,10 +8,17 @@ This is still work in progress.
 
 ## Usage
 
-```js
-import TyteCli from './src/TyteCli'
-import Command from './src/Command/CommandInterface'
+The TyteCli API is quite stratigtforward first,
 
+- You create an implementation of the `Command` interface
+- Create a new instance of `TyteCli`
+- Add your command to it via `TyteCli.addCommands`
+- Call `TyteCli.run()`
+
+```js
+import ....
+
+//step 1
 class EchoCommand extends Command {
   name = 'echo'
 
@@ -21,10 +28,18 @@ class EchoCommand extends Command {
   }
 }
 
+//step 2
 const myApp = new TyteCli()
+
+//step 3
 myApp.addCommand(new EchoCommand())
+
+//step 4
 myApp.run()
 ```
+
+## Advanced usage
+TBD
 
 ## Run
 
