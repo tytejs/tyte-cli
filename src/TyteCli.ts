@@ -54,7 +54,11 @@ export default class TyteCli {
    * @param command the command 
    */
   public addCommand(command: CommandInterface): void {
-    this.commands.push(command)
+    if(this.commands.some(_command => _command.name === command.name)){
+      throw new Error(`Tyte-Cli cannot add command: ${command.constructor.name}. A command already exists with the name: ${command.name}`);
+    }else{
+      this.commands.push(command)
+    }
   }
 
   /**
