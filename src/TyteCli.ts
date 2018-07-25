@@ -1,7 +1,6 @@
 import CommandInterface from './Command/CommandInterface'
 import Output from './IO/Output'
 import * as commander from 'commander'
-import * as color from 'colors' //use later for coloured output
 import Options from './Command/Option'
 import Input from './IO/Input'
 
@@ -55,7 +54,11 @@ export default class TyteCli {
    * @param command the command 
    */
   public addCommand(command: CommandInterface): void {
-    this.commands.push(command)
+    if(this.commands.some(_command => _command.name === command.name)){
+      throw new Error(`Tyte-Cli cannot add command: ${command.constructor.name}. A command with the name: ${command.name} already exists`);
+    }else{
+      this.commands.push(command)
+    }
   }
 
   /**
