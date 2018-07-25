@@ -1,48 +1,52 @@
-Tyte Cli
-=================
+# Tyte Cli
 
-The tyte-cli component eases the creation of beautiful command line applications.
-
+A simpler frontend for [commander]("https://github.com/tj/commander.js").
 
 ### Note
+
 This is still work in progress.
 
+## Usage
 
-## Usage 
+The TyteCli API is quite stratigtforward first,
+
+- You create an implementation of the `Command` interface
+- Create a new instance of `TyteCli`
+- Add your command to it via `TyteCli.addCommands`
+- Call `TyteCli.run()`
+
 ```js
-import Application from "./Application";
-import CommandInterface from "./Command/CommandInterface";
-import InputInterface from "./IO/InputInterface";
-import OutputInterface from "./IO/OutputInterface";
-import CommandOptionInterface from "./Command/CommandOptionInterface";
-import Command from "./Command/Command";
+import ....
 
-//command
-class StartServer implements CommandInterface {
-  options: Array<CommandOptionInterface> = new Array<CommandOptionInterface>();
-  cmd: Command;
+//step 1
+class EchoCommand extends Command {
+  name = 'echo'
 
-  configure() {
-    this.cmd = { cmd: "serve" };
-    this.options.push({
-      option: "-p, --port",
-      description: "Specifies the port to launch the application on"
-    });
-  }
-
-  execute(input: InputInterface, output: OutputInterface) {
-    let port = 8000;
-    let values = input.values();
-    if (values.length > 0) {
-      port = values[0]; //this is buggy we need to check and get the argument passed to the option directly because options can be mixed up
-    }
-    output.write(`Tyte application started on port ${port}`);
-    setTimeout(()=>{},10000);//delay to simulate a started server
+  execute(input, output): Promise<any> {
+    output.write(input.values().join(' '))
+    return Promise.resolve(true)
   }
 }
 
-// Application
-const myApp = new Application();
-myApp.addCommand(new StartServer());
-myApp.run();
+//step 2
+const myApp = new TyteCli()
+
+//step 3
+myApp.addCommand(new EchoCommand())
+
+//step 4
+myApp.run()
 ```
+
+## Advanced usage
+TBD
+
+## Run
+
+```bash
+ts-node test.ts echo "message"
+```
+
+## output
+
+`message`
